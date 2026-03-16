@@ -1,0 +1,304 @@
+<!-- app/templates/onboarding.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Your Learning Path - TechStack Bridge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:           #f5f0f8;
+            --card:         #ffffff;
+            --accent:       #c9aee5;
+            --accent-2:     #f2a7c3;
+            --text:         #4a3f55;
+            --text-muted:   #9b8daa;
+            --border:       #e8dff0;
+            --input-bg:     #faf7fc;
+            --error-bg:     #fde8ee;
+            --error-text:   #c0526f;
+            --error-border: #f5b8cb;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse 60% 50% at 20% 10%, #ddd0f5 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 80% 90%, #fce4ef 0%, transparent 60%),
+                radial-gradient(ellipse 40% 30% at 60% 40%, #cde8f5 0%, transparent 55%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            color: var(--text);
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* Brand mark */
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            animation: fadeUp 0.5s ease both;
+        }
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .brand-dot:nth-child(1) { background: #c9aee5; }
+        .brand-dot:nth-child(2) { background: #f2a7c3; width: 14px; height: 14px; }
+        .brand-dot:nth-child(3) { background: #a7d4f2; }
+
+        /* Card */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem 2.25rem;
+            box-shadow:
+                0 2px 4px rgba(180,150,210,0.06),
+                0 12px 40px rgba(180,150,210,0.12),
+                0 40px 80px rgba(180,150,210,0.08);
+            animation: fadeUp 0.55s ease 0.05s both;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .card-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.4rem;
+        }
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* Error */
+        .error-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-text);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+        }
+        .error-icon {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            margin-top: 1px;
+        }
+
+        /* Form */
+        .field { margin-bottom: 1.25rem; }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        select {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239b8daa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(201,174,229,0.2);
+        }
+
+        .help-text {
+            font-size: 0.75rem;
+            color: #c5b8d0;
+            margin-top: 0.4rem;
+        }
+
+        optgroup {
+            font-weight: 500;
+            font-style: normal;
+            color: var(--text);
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #cdb4f0, #f2a7c3);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+            box-shadow: 0 4px 16px rgba(201,174,229,0.4);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201,174,229,0.5);
+            filter: brightness(1.04);
+        }
+        .btn:active { transform: translateY(0); }
+
+        /* Footer */
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #c0b0cc;
+            margin-top: 1.5rem;
+            animation: fadeUp 0.6s ease 0.3s both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+
+        <div class="brand">
+            <div class="brand-dot"></div>
+            <div class="brand-dot"></div>
+            <div class="brand-dot"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h1>Welcome, {{ user.username }}! 👋</h1>
+                <p>Let's personalize your learning experience</p>
+            </div>
+
+            <!-- Show error message if validation failed -->
+            {% if error %}
+            <div class="error-box">
+                <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <!-- Form submits to same URL with POST method -->
+            <form method="POST" action="/auth/onboarding">
+
+                <!-- Primary Tech Stack (What user knows) -->
+                <div class="field">
+                    <label for="primary_tech_stack">
+                        What technology do you already know?
+                    </label>
+                    <select
+                        id="primary_tech_stack"
+                        name="primary_tech_stack"
+                        required
+                    >
+                        <option value="">-- Choose one --</option>
+
+                        <!-- Loop through tech stacks grouped by category -->
+                        {% for category, techs in tech_stacks_by_category.items() %}
+                            <optgroup label="{{ category | title }}">
+                                {% for tech in techs %}
+                                    <option
+                                        value="{{ tech.name }}"
+                                        {% if primary_tech_stack == tech.name %}selected{% endif %}
+                                    >
+                                        {{ tech.name }}
+                                    </option>
+                                {% endfor %}
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                    <small class="help-text">
+                        This helps us show you relevant comparisons
+                    </small>
+                </div>
+
+                <!-- Learning Tech Stack (What user wants to learn) -->
+                <div class="field">
+                    <label for="learning_tech_stack">
+                        What technology do you want to learn?
+                    </label>
+                    <select
+                        id="learning_tech_stack"
+                        name="learning_tech_stack"
+                        required
+                    >
+                        <option value="">-- Choose one --</option>
+
+                        {% for category, techs in tech_stacks_by_category.items() %}
+                            <optgroup label="{{ category | title }}">
+                                {% for tech in techs %}
+                                    <option
+                                        value="{{ tech.name }}"
+                                        {% if learning_tech_stack == tech.name %}selected{% endif %}
+                                    >
+                                        {{ tech.name }}
+                                    </option>
+                                {% endfor %}
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                    <small class="help-text">
+                        We'll show you how concepts translate
+                    </small>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn">Continue to Dashboard →</button>
+            </form>
+        </div>
+
+        <p class="footer-note">
+            Your preferences can be updated anytime from your profile settings.
+        </p>
+
+    </div>
+</body>
+</html>
