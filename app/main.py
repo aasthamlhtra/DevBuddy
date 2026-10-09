@@ -1,57 +1,29 @@
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from app.api import auth, user
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from . import models
-from .database import Base, engine
-from . import api
+from app.database import engine, Base  # Adjust import paths to your project
+import app.models  # Ensure models are imported so Base knows about them!
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Recreate missing tables on startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
-    await engine.dispose()
 
+app = FastAPI(lifespan=lifespan)
 
-app = FastAPI(lifespan = lifespan)
+templates = Jinja2Templates(directory="app/templates")
 
+# Mount authentication and user routers
+app.include_router(auth.router)
+app.include_router(user.router)
 
 @app.get("/")
-def main():
-    return {"Message" : "Welcome to DevBuddy!"}
+async def landing_page(request: Request):
+    """Renders the main public landing page (index.html)."""
+    return templates.TemplateResponse("index.html", {"request": request})
 
-app.include_router(api.auth_router)
-app.include_router(api.user_router)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# from pydantic import BaseModel
-
-# class QuestionRequest(BaseModel):
-#     question: str
-
-# from app.rag.pipeline.router import build_router
-
-# router = build_router()
-
-# @app.post("/ask")
-# def ask(request: QuestionRequest):
-#     response = router.invoke(request.question)
-#     return {"answer": response}

@@ -1,7 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from app.rag.pipeline.retriever import get_retriever
 
 def format_docs(docs):
@@ -10,7 +10,7 @@ def format_docs(docs):
 
 def build_rag_chain(collection_name: str):
     retriever = get_retriever(collection_name)
-    llm = ChatOpenAI()
+    llm = ChatGroq(model_name="llama-3.1-8b-instant")
 
     prompt = ChatPromptTemplate.from_template("""
         You are DevBuddy, a precise AI assistant for developers.

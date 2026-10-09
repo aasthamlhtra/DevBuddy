@@ -2,7 +2,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 from app.rag.pipeline.retriever import get_retriever
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 
 
 def format_docs(docs):
@@ -15,7 +15,7 @@ def build_mapping_chain(frameworks: list[str]):
         for fw in frameworks
     }
 
-    llm = ChatOpenAI()
+    llm = ChatGroq(model_name="llama-3.1-8b-instant")
 
     prompt = ChatPromptTemplate.from_template("""
         You are DevBuddy, an expert developer assistant.

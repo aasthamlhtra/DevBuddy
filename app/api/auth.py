@@ -52,7 +52,7 @@ async def login(
 
     return response
 
-@router.get("/register", response_class=HTMLResponse)
+@router.get("/register/email", response_class=HTMLResponse)
 def register_page(request : Request):
     return templates.TemplateResponse("register.html", {"request": request})
 

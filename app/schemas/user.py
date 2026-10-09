@@ -1,24 +1,27 @@
 from pydantic import BaseModel, EmailStr, ConfigDict
 from datetime import datetime
-from typing import Annotated, Optional
+from typing import Optional
+
 class UserLogin(BaseModel):
-    username : str
-    password : str
+    username: str
+    password: str
 
 class UserRegister(UserLogin):
-    email : EmailStr
+    email: EmailStr
 
 class User(BaseModel):
-    id : int
-    username : str
-    email : EmailStr
-    created_at : datetime
-    updated_at : datetime
+    id: int
+    username: str
+    email: EmailStr
+    primary_tech_stack: Optional[str] = None
+    learning_tech_stack: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
     
     model_config = ConfigDict(from_attributes=True) 
 
-class UserUpdate:
-    username : str
-    primary_tech_stack : Optional[str] = None
-    learning_tech_stack : Optional[str] = None
-    updated_at : datetime
+class UserUpdate(BaseModel):
+    username: str
+    primary_tech_stack: Optional[str] = None
+    learning_tech_stack: Optional[str] = None
+    updated_at: datetime

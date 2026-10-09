@@ -1,0 +1,375 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBuddy — Cross-Language AI Assistant & RAG Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            accent: '#6366f1',
+                            emerald: '#10b981'
+                        },
+                        darkbg: '#0b0f19',
+                        darkcard: '#111827',
+                        darkborder: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+        .code-font { font-family: 'Fira Code', monospace; }
+        .gradient-text {
+    background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    background-clip: text; /* Standard property to clear linter warning */
+    -webkit-text-fill-color: transparent;
+}
+        .glow-effect {
+            box-shadow: 0 0 50px -12px rgba(99, 102, 241, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="border-b border-darkborder bg-darkbg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="/" class="flex items-center space-x-3">
+                    <div class="h-9 w-9 rounded-lg bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center font-bold text-white shadow-lg shadow-brand-500/30">
+                        &lt;/&gt;
+                    </div>
+                    <span class="text-xl font-bold tracking-tight text-white">DevBuddy<span class="text-brand-500">.ai</span></span>
+                </a>
+                <span class="ml-2 px-2.5 py-0.5 text-xs font-medium bg-brand-500/10 text-brand-500 border border-brand-500/20 rounded-full">Doc RAG + Concept Mapper</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-400">
+                <a href="#features" class="hover:text-white transition">Features</a>
+                <a href="#concept-mapper" class="hover:text-white transition">Concept Mapper</a>
+                <a href="#architecture" class="hover:text-white transition">Architecture</a>
+                <a href="/docs" target="_blank" class="hover:text-white transition flex items-center gap-1">
+                    API Docs <span class="text-xs font-mono bg-darkborder px-1.5 py-0.5 rounded text-gray-300">Swagger</span>
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <a href="/auth/login" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white transition">Sign In</a>
+                <a href="/auth/register/email" class="px-4 py-2 rounded-lg bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white transition text-sm font-medium shadow-md shadow-brand-500/20">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-500 text-xs font-semibold mb-6">
+                <span>⚡ Automated Ingestion + Concept Mapping RAG Engine</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight">
+                Switch Languages Faster by Mapping <span class="gradient-text">Concepts You Already Know</span>
+            </h1>
+            
+            <p class="mt-6 text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto font-normal">
+                DevBuddy automatically scrapes official documentation, builds vector embeddings with MMR retrieval, and translates syntax & semantics from your primary language to target stacks seamlessly.
+            </p>
+
+            <div class="mt-8 flex flex-wrap justify-center items-center gap-4">
+                <a href="#concept-mapper" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold shadow-lg shadow-brand-500/25 transition flex items-center gap-2">
+                    <span>Try Concept Mapper</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+                <a href="/docs" target="_blank" class="px-6 py-3.5 rounded-xl bg-darkcard border border-darkborder hover:bg-gray-800 transition text-gray-300 font-semibold flex items-center gap-2">
+                    <span>Explore API Docs</span>
+                </a>
+            </div>
+
+            <!-- Tech Badges -->
+            <div class="mt-12 flex flex-wrap justify-center items-center gap-3 text-xs text-gray-400 font-mono">
+                <span class="px-3 py-1.5 rounded-md bg-darkcard border border-darkborder">🐍 Python 3.11+</span>
+                <span class="px-3 py-1.5 rounded-md bg-darkcard border border-darkborder">⚡ FastAPI</span>
+                <span class="px-3 py-1.5 rounded-md bg-darkcard border border-darkborder">🦜 LangChain</span>
+                <span class="px-3 py-1.5 rounded-md bg-darkcard border border-darkborder">🔍 ChromaDB</span>
+                <span class="px-3 py-1.5 rounded-md bg-darkcard border border-darkborder">🐘 PostgreSQL + SQLAlchemy</span>
+                <span class="px-3 py-1.5 rounded-md bg-darkcard border border-darkborder">🚀 Redis Cache</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Concept Mapper Demo Section -->
+    <section id="concept-mapper" class="py-12 bg-darkcard/50 border-y border-darkborder relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold">Interactive Concept Translation</h2>
+                <p class="text-gray-400 text-sm mt-2">See how DevBuddy retrieves real official doc context & maps paradigm patterns</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-darkcard border border-darkborder rounded-2xl p-6 glow-effect">
+                <!-- Controls Side -->
+                <div class="lg:col-span-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">From (Language You Know):</label>
+                        <select id="sourceLang" class="w-full bg-darkbg border border-darkborder rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-500">
+                            <option value="python">Python (Asyncio / Dicts / Type Hints)</option>
+                            <option value="javascript">JavaScript / TypeScript (Promises / Event Loop)</option>
+                            <option value="java">Java (Multithreading / Streams)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">To (Target Language):</label>
+                        <select id="targetLang" class="w-full bg-darkbg border border-darkborder rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-500">
+                            <option value="go">Go (Goroutines / Channels / Structs)</option>
+                            <option value="rust">Rust (Futures / Ownership / Enums)</option>
+                            <option value="python">Python (FastAPI / Pydantic)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Concept to Map:</label>
+                        <input id="conceptInput" type="text" value="How do I handle async concurrency and channels?" class="w-full bg-darkbg border border-darkborder rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-500" placeholder="e.g. Async tasks, Exception handling, Dicts...">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Retrieval Strategy:</span>
+                            <span class="text-brand-500 font-mono">MMR (Maximal Marginal Relevance)</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Cache Status:</span>
+                            <span class="text-emerald-400 font-mono">Redis Hit (12ms)</span>
+                        </div>
+                    </div>
+
+                    <button onclick="runConceptMapper()" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
+                        <span>Map Concept via RAG</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Response / Code Preview Side -->
+                <div class="lg:col-span-8 bg-darkbg rounded-xl border border-darkborder p-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-darkborder pb-3 mb-3">
+                            <div class="flex items-center gap-2 text-xs text-gray-400">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                <span class="font-mono">DevBuddy Output Stream</span>
+                            </div>
+                            <span class="text-xs bg-brand-500/10 text-brand-500 border border-brand-500/20 px-2 py-0.5 rounded font-mono">Docs Indexed: Official Go Docs & Python Standard Library</span>
+                        </div>
+
+                        <!-- Output Content -->
+                        <div id="mapperOutput" class="space-y-4 text-sm font-normal text-gray-300">
+                            <p class="text-xs text-gray-400">In <span class="text-brand-500 font-semibold">Python</span>, you use <code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-pink-400">asyncio.gather()</code> or <code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-pink-400">asyncio.Queue</code>. In <span class="text-emerald-400 font-semibold">Go</span>, this concept maps directly to <code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-emerald-400">goroutines</code> and buffered/unbuffered <code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-emerald-400">channels</code>.</p>
+                            
+                            <div class="bg-darkcard border border-darkborder rounded-lg p-3 code-font text-xs overflow-x-auto text-gray-200">
+                                <span class="text-gray-500">// Go Equivalent Concept (Retrieved from Official Docs RAG)</span><br>
+                                <span class="text-pink-400">package</span> main<br><br>
+                                <span class="text-pink-400">import</span> (<br>
+                                &nbsp;&nbsp;<span class="text-emerald-300">"fmt"</span><br>
+                                &nbsp;&nbsp;<span class="text-emerald-300">"time"</span><br>
+                                )<br><br>
+                                <span class="text-pink-400">func</span> worker(ch <span class="text-pink-400">chan</span> <span class="text-yellow-400">string</span>) {<br>
+                                &nbsp;&nbsp;time.Sleep(time.Millisecond * 100)<br>
+                                &nbsp;&nbsp;ch &lt;- <span class="text-emerald-300">"Task completed"</span><br>
+                                }<br><br>
+                                <span class="text-pink-400">func</span> main() {<br>
+                                &nbsp;&nbsp;ch := <span class="text-yellow-400">make</span>(<span class="text-pink-400">chan</span> <span class="text-yellow-400">string</span>)<br>
+                                &nbsp;&nbsp;<span class="text-pink-400">go</span> worker(ch) <span class="text-gray-500">// Maps to asyncio.create_task()</span><br>
+                                &nbsp;&nbsp;fmt.Println(&lt;-ch) <span class="text-gray-500">// Maps to await result</span><br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Retrieved Sources Footnote -->
+                    <div class="mt-4 pt-3 border-t border-darkborder flex items-center justify-between text-xs text-gray-400">
+                        <span>RAG Retrieved Chunks: <strong class="text-gray-200">2 chunks (MMR λ=0.7)</strong></span>
+                        <a href="/docs" target="_blank" class="text-brand-500 hover:underline">View Vector Search Spec &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold">Built for High-Throughput Technical Knowledge Discovery</h2>
+                <p class="text-gray-400 mt-2">DevBuddy replaces manual doc searches with automated data ingestion, intelligent MMR retrieval, and optimized caching.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-darkcard border border-darkborder rounded-xl p-6 hover:border-gray-700 transition">
+                    <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-500 flex items-center justify-center font-bold mb-4">
+                        🌐
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Automated Doc Scraping & Ingestion</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Data pipelines continuously scrape official language docs, parse structured sections, chunk text intelligently, and produce rich embeddings stored inside ChromaDB.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-darkcard border border-darkborder rounded-xl p-6 hover:border-gray-700 transition">
+                    <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-500 flex items-center justify-center font-bold mb-4">
+                        🎯
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">MMR-Optimized Vector Retrieval</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Uses Maximal Marginal Relevance (MMR) algorithms to eliminate redundant search hits and maximize diversity in context provided to the LLM.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-darkcard border border-darkborder rounded-xl p-6 hover:border-gray-700 transition">
+                    <div class="h-10 w-10 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-500 flex items-center justify-center font-bold mb-4">
+                        ⚡
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Redis Caching & Scalable FastAPI</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Integrated Redis caching layer drastically reduces latency under concurrent query load, backed by async FastAPI endpoints and PostgreSQL persistence.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture & Terminal Quickstart -->
+    <section id="architecture" class="py-12 bg-darkcard/30 border-t border-darkborder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-4">Architecture & Tech Stack</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        DevBuddy combines an async web backend with modern RAG concepts to deliver precise cross-language syntax translation grounded in official documentation.
+                    </p>
+
+                    <div class="space-y-3 font-mono text-xs">
+                        <div class="p-3 bg-darkcard border border-darkborder rounded-lg flex items-center justify-between">
+                            <span class="text-gray-300">Scraping Pipeline:</span>
+                            <span class="text-brand-500">BeautifulSoup + Custom Chunky Embedders</span>
+                        </div>
+                        <div class="p-3 bg-darkcard border border-darkborder rounded-lg flex items-center justify-between">
+                            <span class="text-gray-300">Vector Storage & RAG:</span>
+                            <span class="text-brand-500">ChromaDB + LangChain MMR</span>
+                        </div>
+                        <div class="p-3 bg-darkcard border border-darkborder rounded-lg flex items-center justify-between">
+                            <span class="text-gray-300">Caching & Database:</span>
+                            <span class="text-brand-500">Redis Cache + PostgreSQL (SQLAlchemy Async)</span>
+                        </div>
+                        <div class="p-3 bg-darkcard border border-darkborder rounded-lg flex items-center justify-between">
+                            <span class="text-gray-300">API Server:</span>
+                            <span class="text-brand-500">FastAPI Async Uvicorn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quickstart Terminal -->
+                <div class="bg-darkcard border border-darkborder rounded-xl p-5 code-font text-xs">
+                    <div class="flex items-center justify-between border-b border-darkborder pb-3 mb-3">
+                        <div class="flex space-x-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <span class="text-gray-400 text-[11px]">quickstart.sh</span>
+                    </div>
+
+                    <pre class="text-gray-300 overflow-x-auto leading-relaxed">
+<span class="text-gray-500"># 1. Clone & Set Up Environment</span>
+git clone https://github.com/aasthamlhtra/DevBuddy.git
+cd DevBuddy
+
+<span class="text-gray-500"># 2. Activate Python virtualenv & install dependencies</span>
+python -m venv venv
+<span class="text-brand-500">source</span> venv/bin/activate
+pip install -r requirements.txt
+
+<span class="text-gray-500"># 3. Launch FastAPI server with relative module support</span>
+uvicorn app.main:app --reload
+
+<span class="text-emerald-400">INFO: Application startup complete. Running on http://127.0.0.1:8000</span>
+</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-darkborder py-8 text-center text-xs text-gray-500">
+        <p>&copy; 2026 DevBuddy.ai — Cross-Language AI Assistant & RAG Platform. All rights reserved.</p>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        function runConceptMapper() {
+            const source = document.getElementById('sourceLang').value;
+            const target = document.getElementById('targetLang').value;
+            const output = document.getElementById('mapperOutput');
+
+            output.innerHTML = `
+                <div class="flex items-center space-x-2 text-brand-500 font-mono text-xs animate-pulse">
+                    <span>Searching ChromaDB vector space using MMR...</span>
+                </div>
+            `;
+
+            setTimeout(() => {
+                if (target === 'rust') {
+                    output.innerHTML = `
+                        <p class="text-xs text-gray-400">In <span class="text-brand-500 font-semibold">${source.toUpperCase()}</span>, concurrency is handled via high-level runtimes. In <span class="text-indigo-400 font-semibold">Rust</span>, concepts map to <code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-indigo-400">tokio::spawn</code> and channel primitives (<code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-indigo-400">mpsc</code>).</p>
+                        <div class="bg-darkcard border border-darkborder rounded-lg p-3 code-font text-xs overflow-x-auto text-gray-200">
+                            <span class="text-gray-500">// Rust Tokio Channel Mapping</span><br>
+                            <span class="text-pink-400">use</span> tokio::sync::mpsc;<br><br>
+                            <span class="text-pink-400">#[tokio::main]</span><br>
+                            <span class="text-pink-400">async fn</span> main() {<br>
+                            &nbsp;&nbsp;<span class="text-pink-400">let</span> (tx, <span class="text-pink-400">mut</span> rx) = mpsc::channel(<span class="text-yellow-400">32</span>);<br>
+                            &nbsp;&nbsp;tokio::spawn(<span class="text-pink-400">async move</span> {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;tx.send(<span class="text-emerald-300">"Task completed"</span>).<span class="text-pink-400">await</span>.unwrap();<br>
+                            &nbsp;&nbsp;});<br>
+                            &nbsp;&nbsp;<span class="text-pink-400">let</span> res = rx.recv().<span class="text-pink-400">await</span>;<br>
+                            }
+                        </div>
+                    `;
+                } else {
+                    output.innerHTML = `
+                        <p class="text-xs text-gray-400">In <span class="text-brand-500 font-semibold">${source.toUpperCase()}</span>, you write standard asynchronous handlers. In <span class="text-emerald-400 font-semibold">Go</span>, this concept maps directly to <code class="code-font bg-darkcard px-1.5 py-0.5 rounded text-emerald-400">goroutines</code> and channels.</p>
+                        <div class="bg-darkcard border border-darkborder rounded-lg p-3 code-font text-xs overflow-x-auto text-gray-200">
+                            <span class="text-gray-500">// Go Goroutine & Channel Concept</span><br>
+                            <span class="text-pink-400">package</span> main<br><br>
+                            <span class="text-pink-400">func</span> main() {<br>
+                            &nbsp;&nbsp;ch := <span class="text-yellow-400">make</span>(<span class="text-pink-400">chan</span> <span class="text-yellow-400">string</span>)<br>
+                            &nbsp;&nbsp;<span class="text-pink-400">go</span> <span class="text-pink-400">func</span>() { ch &lt;- <span class="text-emerald-300">"Done!"</span> }()<br>
+                            &nbsp;&nbsp;println(&lt;-ch)<br>
+                            }
+                        </div>
+                    `;
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>

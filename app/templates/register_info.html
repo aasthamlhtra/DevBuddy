@@ -1,16 +1,91 @@
+<!-- register_info.html -->
 <!DOCTYPE html>
-<html>
-<body>
-  <h1>Tell us about yourself</h1>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Details — DevBuddy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            accent: '#6366f1',
+                            emerald: '#10b981'
+                        },
+                        darkbg: '#0b0f19',
+                        darkcard: '#111827',
+                        darkborder: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+        .glow-effect { box-shadow: 0 0 50px -12px rgba(99, 102, 241, 0.25); }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen flex items-center justify-center p-4">
 
-  {% if error %}
-    <p style="color:red;">{{ error }}</p>
-  {% endif %}
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="flex items-center justify-center space-x-3 mb-8">
+            <a href="/" class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center font-bold text-white shadow-lg shadow-brand-500/30">
+                    &lt;/&gt;
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white">DevBuddy<span class="text-brand-500">.ai</span></span>
+            </a>
+        </div>
 
-  <form action="/user/dashboard" method="post">
-    <input type="text" name="username">
-    <input type="text" name="password">
-    <button type="submit">Login</button>
-  </form>
+        <!-- Profile Info Card -->
+        <div class="bg-darkcard border border-darkborder rounded-2xl p-8 glow-effect">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-white">Tell us about yourself</h1>
+                <p class="text-sm text-gray-400 mt-1">Help us personalize your developer experience</p>
+            </div>
+
+            {% if error %}
+            <div class="mb-5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-3 text-xs flex items-center gap-2">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <form action="/user/dashboard" method="post" class="space-y-4">
+                <div>
+                    <label for="display_name" class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Display Name / Full Name</label>
+                    <input type="text" id="display_name" name="display_name" placeholder="Alex Rivers" class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                </div>
+
+                <div>
+                    <label for="developer_role" class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Primary Role</label>
+                    <input type="text" id="developer_role" name="developer_role" placeholder="e.g. Backend Engineer, Systems Developer" class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/20 transition cursor-pointer flex items-center justify-center gap-2 mt-2">
+                    <span>Continue to Dashboard &rarr;</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>

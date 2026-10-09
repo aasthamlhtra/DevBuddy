@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBuddy AI</title>
+    <!-- Marked.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151c2c;
+            --bg-sidebar: #111827;
+            --bg-code: #030712;
+            --border: #1e293b;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Fixed Width Sidebar */
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            flex-shrink: 0;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 24px;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .user-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .user-info p strong { color: var(--text-main); }
+
+        .badge {
+            display: inline-block;
+            background-color: #1e293b;
+            color: #93c5fd;
+            border: 1px solid #3b82f6;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            color: #f87171;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Main Area */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .chat-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            max-width: 100%;
+        }
+
+        .user-query {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Typography & Formatting Rules */
+        .bot-response {
+            color: #d1d5db;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .bot-response p {
+            margin-bottom: 14px;
+        }
+
+        .bot-response h1, .bot-response h2, .bot-response h3, .bot-response h4 {
+            color: #f9fafb;
+            margin-top: 22px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .bot-response h3 { font-size: 1.15rem; }
+
+        .bot-response ul, .bot-response ol {
+            margin: 12px 0 16px 24px;
+        }
+
+        .bot-response li {
+            margin-bottom: 8px;
+        }
+
+        .bot-response hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 24px 0;
+        }
+
+        /* Clean Table Formatting */
+        .bot-response table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--bg-main);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .bot-response th, .bot-response td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+
+        .bot-response th {
+            background-color: #1e293b;
+            color: #93c5fd;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        /* Clean Code Blocks */
+        .bot-response pre {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 18px 0;
+            white-space: pre;
+        }
+
+        .bot-response code {
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+        }
+
+        .bot-response :not(pre) > code {
+            background-color: #1e293b;
+            color: #f43f5e;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Form Controls */
+        .input-container {
+            padding: 20px 36px;
+            background-color: var(--bg-sidebar);
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-main);
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .submit-btn {
+            padding: 14px 28px;
+            background-color: var(--accent);
+            color: #ffffff;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover { background-color: var(--accent-hover); }
+        .submit-btn:disabled { background-color: #334155; cursor: not-allowed; }
+
+        .loading-text { color: var(--text-muted); font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div>
+            <div class="logo">⚡ DevBuddy AI</div>
+            <div class="user-info">
+                <p><strong>User:</strong> {{ user.username if user else "Developer" }}</p>
+                {% if user and user.primary_tech_stack %}
+                <p><strong>Primary:</strong> <span class="badge">{{ user.primary_tech_stack }}</span></p>
+                {% endif %}
+                {% if user and user.learning_tech_stack %}
+                <p><strong>Learning:</strong> <span class="badge">{{ user.learning_tech_stack }}</span></p>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            <a href="/auth/login" class="logout-btn">← Log out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="chat-history" id="chatHistory">
+            {% if history %}
+                {% for item in history|reverse %}
+                    <div class="chat-card">
+                        <div class="user-query">Q: {{ item.question }}</div>
+                        <textarea class="raw-data" style="display:none;">{{ item.response }}</textarea>
+                        <div class="bot-response"></div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p id="emptyNotice" style="color: #64748b;">Ask DevBuddy any question about FastAPI or Flask to start!</p>
+            {% endif %}
+        </div>
+
+        <div class="input-container">
+            <form class="chat-form" id="chatForm">
+                <input type="text" id="questionInput" name="question" class="chat-input" placeholder="Ask a question..." required autocomplete="off">
+                <button type="submit" id="sendBtn" class="submit-btn">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configure marked.js options for GitHub Flavored Markdown
+        marked.use({
+            breaks: true,
+            gfm: true
+        });
+
+        const chatForm = document.getElementById('chatForm');
+        const questionInput = document.getElementById('questionInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatHistory = document.getElementById('chatHistory');
+        const emptyNotice = document.getElementById('emptyNotice');
+
+        // Parse Jinja loaded Markdown history
+        document.querySelectorAll('.chat-card').forEach(card => {
+            const raw = card.querySelector('.raw-data');
+            const target = card.querySelector('.bot-response');
+            if (raw && target) {
+                target.innerHTML = marked.parse(raw.value);
+            }
+        });
+
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            if (emptyNotice) emptyNotice.remove();
+
+            const card = document.createElement('div');
+            card.className = 'chat-card';
+            
+            const qDiv = document.createElement('div');
+            qDiv.className = 'user-query';
+            qDiv.textContent = `Q: ${question}`;
+            
+            const rDiv = document.createElement('div');
+            rDiv.className = 'bot-response loading-text';
+            rDiv.textContent = 'DevBuddy is processing...';
+            
+            card.appendChild(qDiv);
+            card.appendChild(rDiv);
+            chatHistory.appendChild(card);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
+            questionInput.value = '';
+            questionInput.disabled = true;
+            sendBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('question', question);
+
+                const res = await fetch('/user/chat', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!res.ok) throw new Error('Failed to fetch response');
+
+                const data = await res.json();
+                rDiv.classList.remove('loading-text');
+                rDiv.innerHTML = marked.parse(data.response);
+
+            } catch (err) {
+                rDiv.classList.remove('loading-text');
+                rDiv.style.color = '#ef4444';
+                rDiv.textContent = 'Error: ' + err.message;
+            } finally {
+                questionInput.disabled = false;
+                sendBtn.disabled = false;
+                questionInput.focus();
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,286 +1,101 @@
-<!-- <!DOCTYPE html>
-<html>
-<body>
-  <h1>Register</h1>
-
-  {% if error %}
-    <p style="color:red;">{{ error }}</p>
-  {% endif %}
-
-  <form action="/auth/register/email" method="post">
-    <input type="text" name="email">
-    <button type="submit">Login</button>
-  </form>
-</body>
-</html> -->
-
+<!-- register.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:           #f5f0f8;
-      --card:         #ffffff;
-      --accent:       #c9aee5;
-      --accent-2:     #f2a7c3;
-      --text:         #4a3f55;
-      --text-muted:   #9b8daa;
-      --border:       #e8dff0;
-      --input-bg:     #faf7fc;
-      --error-bg:     #fde8ee;
-      --error-text:   #c0526f;
-      --error-border: #f5b8cb;
-    }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse 60% 50% at 20% 10%, #ddd0f5 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 80% 90%, #fce4ef 0%, transparent 60%),
-        radial-gradient(ellipse 40% 30% at 60% 40%, #cde8f5 0%, transparent 55%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      color: var(--text);
-    }
-
-    .wrapper {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    /* Brand mark */
-    .brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.5s ease both;
-    }
-    .brand-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .brand-dot:nth-child(1) { background: #c9aee5; }
-    .brand-dot:nth-child(2) { background: #f2a7c3; width: 14px; height: 14px; }
-    .brand-dot:nth-child(3) { background: #a7d4f2; }
-
-    /* Card */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 2.5rem 2.25rem;
-      box-shadow:
-        0 2px 4px rgba(180,150,210,0.06),
-        0 12px 40px rgba(180,150,210,0.12),
-        0 40px 80px rgba(180,150,210,0.08);
-      animation: fadeUp 0.55s ease 0.05s both;
-    }
-
-    .card-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .card-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      margin-bottom: 0.4rem;
-    }
-    .card-header p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      font-weight: 300;
-    }
-
-    /* Error */
-    .error-box {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      background: var(--error-bg);
-      border: 1px solid var(--error-border);
-      color: var(--error-text);
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      margin-bottom: 1.25rem;
-    }
-    .error-icon {
-      flex-shrink: 0;
-      width: 16px;
-      height: 16px;
-      margin-top: 1px;
-    }
-
-    /* Form */
-    .field { margin-bottom: 1.1rem; }
-
-    label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    input[type="email"],
-    input[type="text"] {
-      width: 100%;
-      background: var(--input-bg);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    input::placeholder { color: #c5b8d0; }
-    input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(201,174,229,0.2);
-    }
-
-    /* Button */
-    .btn {
-      width: 100%;
-      padding: 0.85rem;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #cdb4f0, #f2a7c3);
-      color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin-top: 0.5rem;
-      transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
-      box-shadow: 0 4px 16px rgba(201,174,229,0.4);
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(201,174,229,0.5);
-      filter: brightness(1.04);
-    }
-    .btn:active { transform: translateY(0); }
-
-    /* Divider */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 1.75rem 0 1.5rem;
-    }
-    .divider hr {
-      flex: 1;
-      border: none;
-      border-top: 1px solid var(--border);
-    }
-    .divider span {
-      font-size: 0.75rem;
-      color: #c5b8d0;
-    }
-
-    .signin-link {
-      text-align: center;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-    .signin-link a {
-      color: #a07cc5;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.15s;
-    }
-    .signin-link a:hover { color: var(--accent); }
-
-    /* Footer */
-    .footer-note {
-      text-align: center;
-      font-size: 0.75rem;
-      color: #c0b0cc;
-      margin-top: 1.5rem;
-      animation: fadeUp 0.6s ease 0.3s both;
-    }
-    .footer-note a {
-      color: #b89fd4;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — DevBuddy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            accent: '#6366f1',
+                            emerald: '#10b981'
+                        },
+                        darkbg: '#0b0f19',
+                        darkcard: '#111827',
+                        darkborder: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+        .glow-effect { box-shadow: 0 0 50px -12px rgba(99, 102, 241, 0.25); }
+    </style>
 </head>
-<body>
-  <div class="wrapper">
+<body class="bg-darkbg text-gray-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="brand">
-      <div class="brand-dot"></div>
-      <div class="brand-dot"></div>
-      <div class="brand-dot"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h1>Welcome</h1>
-        <p>Create your account to get started</p>
-      </div>
-
-      {% if error %}
-      <div class="error-box">
-        <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <span>{{ error }}</span>
-      </div>
-      {% endif %}
-
-      <form action="/auth/register/email" method="post">
-        <div class="field">
-          <label for="email">Email address</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="flex items-center justify-center space-x-3 mb-8">
+            <a href="/" class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center font-bold text-white shadow-lg shadow-brand-500/30">
+                    &lt;/&gt;
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white">DevBuddy<span class="text-brand-500">.ai</span></span>
+            </a>
         </div>
 
-        <button type="submit" class="btn">Continue →</button>
-      </form>
+        <!-- Card -->
+        <div class="bg-darkcard border border-darkborder rounded-2xl p-8 glow-effect">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-white">Create Account</h1>
+                <p class="text-sm text-gray-400 mt-1">Enter your email to get started</p>
+            </div>
 
-      <div class="divider">
-        <hr><span>or</span><hr>
-      </div>
+            <!-- Step Progress Indicator -->
+            <div class="flex items-center justify-center space-x-2 mb-6">
+                <div class="h-1.5 w-8 rounded-full bg-brand-500"></div>
+                <div class="h-1.5 w-4 rounded-full bg-darkborder"></div>
+                <div class="h-1.5 w-4 rounded-full bg-darkborder"></div>
+            </div>
 
-      <p class="signin-link">
-        Already have an account? <a href="/auth/login">Sign in</a>
-      </p>
+            {% if error %}
+            <div class="mb-5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-3 text-xs flex items-center gap-2">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <form action="/auth/register/email" method="post" class="space-y-4">
+                <div>
+                    <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Email address</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/20 transition cursor-pointer flex items-center justify-center gap-2">
+                    <span>Continue &rarr;</span>
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-darkborder text-center text-xs text-gray-400">
+                Already have an account? <a href="/auth/login" class="text-brand-500 font-medium hover:underline">Sign in</a>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-gray-500 mt-6">
+            By continuing, you agree to our <a href="#" class="underline hover:text-gray-300">Terms</a> and <a href="#" class="underline hover:text-gray-300">Privacy Policy</a>.
+        </p>
     </div>
 
-    <p class="footer-note">
-      By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
-    </p>
-
-  </div>
 </body>
 </html>

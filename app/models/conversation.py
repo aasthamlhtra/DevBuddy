@@ -1,11 +1,13 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.schema import ForeignKey
-from sqlalchemy import Integer, String, Text, TIMESTAMP, DateTime, text
+from sqlalchemy import Integer, Text, DateTime, func
 from ..database import Base
-from datetime import datetime, time
+from datetime import datetime
 
 class Conversation(Base):
     __tablename__ = "conversation"
 
-    id : Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id : Mapped[int] = mapped_column(Integer)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    response: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
